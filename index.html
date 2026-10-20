@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>para Leyre</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#cfeefc;--ink:#2a3b2a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10182b;--ink:#cfe6c9}}
+:root[data-theme="dark"]{--bg:#10182b;--ink:#cfe6c9}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+#w{width:min(96vw,984px);container-type:inline-size}
+#s{position:relative;padding-top:24cqw}
+canvas{width:100%;height:auto;image-rendering:pixelated;display:block}
+#bub{display:none;position:absolute;left:43cqw;width:52cqw;bottom:calc(42.7cqw + 20px);box-sizing:border-box;padding:12px 18px 14px;background:#fff;color:#1b1b1b;font:clamp(15px,3.1cqw,30px)/1.15 VT323,ui-monospace,monospace;box-shadow:0 -4px 0 0 #1b1b1b,0 4px 0 0 #1b1b1b,-4px 0 0 0 #1b1b1b,4px 0 0 0 #1b1b1b}
+#bub .tl{position:absolute;left:calc(24cqw - 20px);top:100%;width:40px;height:16px;shape-rendering:crispEdges}
+#bub .nx{position:absolute;right:10px;bottom:2px;font-size:.7em;font-style:normal;animation:bl 1s steps(1) infinite}
+@keyframes bl{50%{opacity:0}}
+p{margin:0;font-size:14px;opacity:.7;min-height:3.4em;max-width:min(90vw,640px);text-align:center;line-height:1.4}
+p.dlg{font-size:17px;opacity:1}
+</style></head><body><div id="w"><div id="s"><div id="bub"><span id="bt"></span><i class="nx">▼</i><svg class="tl" viewBox="0 0 10 4"><path fill="#1b1b1b" d="M1 0h1v1H1zM8 0h1v1H8zM2 1h1v1H2zM7 1h1v1H7zM3 2h1v1H3zM6 2h1v1H6zM4 3h2v1H4z"/><path fill="#fff" d="M2 0h6v1H2zM3 1h4v1H3zM4 2h2v1H4z"/></svg></div><canvas id="c" width="82" height="40"></canvas></div></div>
+<script>
+const W=82,H=40,BOYX=40;
+const cv=document.getElementById('c'),g=cv.getContext('2d');
+const boy=(()=>{
+const P=["#241313", "#281515", "#190d0d", "#552c2c", "#1c0f0f", "#3c1f1f", "#140b0b", "#2a1616", "#1d0f0f", "#8e544d", "#cb786d", "#e9e9e9", "#000000", "#6a3f39", "#ffffff", "#3ca370", "#3d6e70", "#272736", "#191923", "#b3b3a5", "#2b4d4f", "#ffffeb"],R=["........00000100......", ".....1100111123411....", "....000022441235110...", "...11442011446035101..", "...444113788760036201.", "..4102456411464231441.", ".141261441141221415111", ".14144000041142414451.", "1146351146191444141341", "11473544619aa119a14541", "145551441911a9a11a131.", "1134414111bcaaabc1131.", ".101441adaecaaaeca11..", "...0114aaaecaaaeca1...", "....0041aaaaaaaaaa....", ".....00199aaaaaaa.....", "........ffff9af.......", ".........ggffbff......", "........fffffefff.....", "........fffffefgff....", ".......fffgffefgff....", ".......fffgffeffgf....", ".......a9gfffeffg9....", ".......aafffhiiffa....", ".........iihhhhii.....", ".........hhhh.hhh.....", ".........hhhh.hhhh....", ".........hhh...hhh....", ".........gjk...klg....", ".........lll...lll...."],AL='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const FH=[".rlrlr.","rrlrrrr","rdrrrdr",".rrdrr.","..rdr.."],FC={r:'#d63a49',l:'#f0707a',d:'#a82434'};
+const HO=[[-1,-10],[3,-14],[7,-11],[10,-7],[5,-6]];
+const W=40,H=34,CX=4,cv=document.createElement('canvas'),x=cv.getContext('2d');
+cv.width=W;cv.height=H;
+const rc=(a,b,w,h,c)=>{x.fillStyle=c;x.fillRect(a,b,w,h)};
+const ez=u=>u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2,S=Math.sin,C=Math.cos,D=Math.PI/180;
+function bg(){for(let j=0;j<9;j++)for(let i=0;i<10;i++)rc(i*4,j*4,4,4,(i+j)%2?'#a9d493':'#b9e0a4')}
+function body(b,A,bl){const rs=R.slice();
+ const sc=(s,i,c)=>s.slice(0,i)+c+s.slice(i+1);
+ if(bl){for(const i of[10,11,15,16])rs[11]=sc(rs[11],i,'a');rs[12]=sc(sc(rs[12],10,'c'),15,'c')}
+ if(A>=1)for(let j=21;j<=23;j++)rs[j]=rs[j].slice(0,16)+'ff'+rs[j].slice(18);
+ if(b)rs.splice(20,0,rs[20]);const top=H-rs.length;
+ rs.forEach((r,j)=>{for(let i=0;i<r.length;i++)if(r[i]!='.')rc(CX+i,top+j,1,1,P[AL.indexOf(r[i])])})}
+function arm(A){if(A<1)return;const r=A*D;
+ for(let k=0;k<=4;k+=.5)rc(Math.round(20+k*S(r)),Math.round(22+k*C(r)),2,2,'#3ca370');
+ for(let k=5;k<=6;k+=.5)rc(Math.round(20+k*S(r)),Math.round(22+k*C(r)),2,2,'#cb786d')}
+function bouquet(hx,hy){
+ HO.forEach(([a,b])=>{const cx=hx+a,cy=hy+b+2,n=Math.max(Math.abs(cx-hx),Math.abs(cy-hy));
+  for(let k=0;k<=n;k++)rc(Math.round(hx+(cx-hx)*k/n),Math.round(hy+(cy-hy)*k/n),1,1,'#3ca370')});
+ HO.forEach(([a,b])=>FH.forEach((r,j)=>{for(let i=0;i<7;i++)if(r[i]!='.')rc(hx+a-3+i,hy+b-2+j,1,1,FC[r[i]])}))}
+function spark(sx,y,t){const f=Math.floor(t/150)%2,c=['#ffffeb','#ffffff'];
+ [[-6,-4],[5,-6],[-3,3],[7,2]].forEach(([a,b],n)=>{const s=sx+a,q=y+b+(f?-1:0);
+  rc(s,q-1,1,3,c[n%2]);rc(s-1,q,3,1,c[n%2])})}
+function frame(ms,vt){const t=vt%10000,b=Math.sin(ms/450)>0?1:0,bl=ms%3400<150;
+ let A=0,sh=0,bq=false,sp=false,bob=0;
+ if(t>=2500&&t<4000){sh=-10*(1-ez((t-2500)/1500));bq=true}
+ else if(t>=4000&&t<5500){A=60*ez((t-4000)/1500);bq=true}
+ else if(t>=5500&&t<8000){A=60;bq=true;bob=Math.floor(ms/500)%2?-1:0;if(t>7500&&Math.floor(t/100)%2)bq=false}
+ else if(t>=8000&&t<9500){A=60*(1-ez((t-8000)/1500));sp=t<8700}
+ x.clearRect(0,0,W,H);
+ const r=A*D,hx=A<1?21:Math.round(21+6*S(r)),hy=A<1?28:Math.round(23+6*C(r));
+ if(bq)bouquet(hx+Math.round(sh),hy+bob);
+ body(b,A,bl);arm(A);
+ if(sp)spark(31,18,t-8000);
+ }
+return {frame,cv};
+})();
+const cowTick=(()=>{const P=[[31,25,"#ffb570"],[32,25,"#ffb570"],[40,25,"#ffb570"],[41,25,"#ffb570"],[30,26,"#ffb570"],[31,26,"#ffb570"],[32,26,"#b37f4f"],[39,26,"#ffb570"],[40,26,"#ffb570"],[41,26,"#b37f4f"],[30,27,"#ffb570"],[31,27,"#b37f4f"],[32,27,"#b3b3a5"],[33,27,"#552c2c"],[34,27,"#552c2c"],[35,27,"#552c2c"],[36,27,"#552c2c"],[37,27,"#552c2c"],[38,27,"#552c2c"],[39,27,"#ffffeb"],[40,27,"#b37f4f"],[30,28,"#ffffeb"],[31,28,"#b3b3a5"],[32,28,"#ffffeb"],[33,28,"#ffffeb"],[34,28,"#552c2c"],[35,28,"#552c2c"],[36,28,"#552c2c"],[37,28,"#552c2c"],[38,28,"#ffffeb"],[39,28,"#ffffeb"],[40,28,"#b3b3a5"],[26,29,"#ffffeb"],[27,29,"#ffffeb"],[28,29,"#ffffeb"],[29,29,"#ffffeb"],[30,29,"#ffffeb"],[31,29,"#ffffeb"],[32,29,"#ffffeb"],[33,29,"#ffffeb"],[34,29,"#ffffeb"],[35,29,"#552c2c"],[36,29,"#552c2c"],[37,29,"#ffffeb"],[38,29,"#ffffeb"],[39,29,"#ffffeb"],[40,29,"#ffffeb"],[41,29,"#b3b3a5"],[42,29,"#b3b3a5"],[43,29,"#b3b3a5"],[26,30,"#ffffeb"],[27,30,"#ff6b97"],[28,30,"#ff6b97"],[29,30,"#ff6b97"],[30,30,"#ffffeb"],[31,30,"#ffffeb"],[32,30,"#ffffeb"],[33,30,"#ffffeb"],[34,30,"#ffffeb"],[35,30,"#ffffeb"],[36,30,"#ffffeb"],[37,30,"#ffffeb"],[38,30,"#ffffeb"],[39,30,"#ffffeb"],[40,30,"#ffffeb"],[41,30,"#b34b6a"],[42,30,"#b34b6a"],[43,30,"#b3b3a5"],[27,31,"#ffffeb"],[28,31,"#ff6b97"],[29,31,"#ff6b97"],[30,31,"#552c2c"],[31,31,"#ffffeb"],[32,31,"#ffffeb"],[33,31,"#000000"],[34,31,"#000000"],[35,31,"#ffffeb"],[36,31,"#ffffeb"],[37,31,"#ffffeb"],[38,31,"#ffffeb"],[39,31,"#000000"],[40,31,"#000000"],[41,31,"#b34b6a"],[42,31,"#b3b3a5"],[17,32,"#552c2c"],[19,32,"#552c2c"],[28,32,"#ffffeb"],[29,32,"#ffffeb"],[30,32,"#552c2c"],[31,32,"#552c2c"],[32,32,"#ffffeb"],[33,32,"#000000"],[34,32,"#000000"],[35,32,"#ffffeb"],[36,32,"#ffffeb"],[37,32,"#ffffeb"],[38,32,"#ffffeb"],[39,32,"#000000"],[40,32,"#000000"],[41,32,"#b3b3a5"],[16,33,"#552c2c"],[17,33,"#552c2c"],[18,33,"#552c2c"],[19,33,"#3c1f1f"],[20,33,"#3c1f1f"],[30,33,"#552c2c"],[31,33,"#552c2c"],[32,33,"#ffffeb"],[33,33,"#000000"],[34,33,"#000000"],[35,33,"#ffffeb"],[36,33,"#ffffeb"],[37,33,"#ffffeb"],[38,33,"#ffffeb"],[39,33,"#000000"],[40,33,"#000000"],[17,34,"#552c2c"],[18,34,"#3c1f1f"],[19,34,"#3c1f1f"],[22,34,"#552c2c"],[23,34,"#552c2c"],[24,34,"#552c2c"],[25,34,"#552c2c"],[26,34,"#ffffeb"],[27,34,"#ffffeb"],[28,34,"#ffffeb"],[29,34,"#b3b3a5"],[30,34,"#552c2c"],[31,34,"#552c2c"],[32,34,"#ffffeb"],[33,34,"#ffffeb"],[34,34,"#ffffeb"],[35,34,"#ffffeb"],[36,34,"#ffffeb"],[37,34,"#ffffeb"],[38,34,"#ffffeb"],[39,34,"#ffffeb"],[40,34,"#ffffeb"],[18,35,"#3c1f1f"],[21,35,"#552c2c"],[22,35,"#552c2c"],[23,35,"#552c2c"],[24,35,"#552c2c"],[25,35,"#ffffeb"],[26,35,"#ffffeb"],[27,35,"#ffffeb"],[28,35,"#ffffeb"],[29,35,"#b3b3a5"],[30,35,"#552c2c"],[31,35,"#ffffeb"],[32,35,"#ffffeb"],[33,35,"#ffffeb"],[34,35,"#ff6b97"],[35,35,"#ff6b97"],[36,35,"#ff6b97"],[37,35,"#ff6b97"],[38,35,"#ff6b97"],[39,35,"#ff6b97"],[40,35,"#ff6b97"],[18,36,"#b3b3a5"],[21,36,"#552c2c"],[22,36,"#552c2c"],[23,36,"#552c2c"],[24,36,"#ffffeb"],[25,36,"#ffffeb"],[26,36,"#ffffeb"],[27,36,"#ffffeb"],[28,36,"#ffffeb"],[29,36,"#b3b3a5"],[30,36,"#ffffeb"],[31,36,"#ffffeb"],[32,36,"#ffffeb"],[33,36,"#ff6b97"],[34,36,"#ff6b97"],[35,36,"#b34b6a"],[36,36,"#ff6b97"],[37,36,"#ff6b97"],[38,36,"#ff6b97"],[39,36,"#b34b6a"],[40,36,"#ff6b97"],[19,37,"#b3b3a5"],[20,37,"#ffffeb"],[21,37,"#ffffeb"],[22,37,"#ffffeb"],[23,37,"#ffffeb"],[24,37,"#ffffeb"],[25,37,"#ffffeb"],[26,37,"#ffffeb"],[27,37,"#ffffeb"],[28,37,"#ffffeb"],[29,37,"#b3b3a5"],[30,37,"#b3b3a5"],[31,37,"#ffffeb"],[32,37,"#ffffeb"],[33,37,"#ff6b97"],[34,37,"#ff6b97"],[35,37,"#7e354a"],[36,37,"#ff6b97"],[37,37,"#ff6b97"],[38,37,"#ff6b97"],[39,37,"#7e354a"],[40,37,"#ff6b97"],[21,38,"#ffffeb"],[22,38,"#ffffeb"],[23,38,"#ffffeb"],[24,38,"#ffffeb"],[25,38,"#ffffeb"],[26,38,"#ffffeb"],[27,38,"#ffffeb"],[28,38,"#ffffeb"],[29,38,"#ffffeb"],[30,38,"#b3b3a5"],[31,38,"#b3b3a5"],[32,38,"#b3b3a5"],[33,38,"#ffffeb"],[34,38,"#ff6b97"],[35,38,"#ff6b97"],[36,38,"#ff6b97"],[37,38,"#ff6b97"],[38,38,"#ff6b97"],[39,38,"#ff6b97"],[21,39,"#ffffeb"],[22,39,"#ffffeb"],[23,39,"#ffffeb"],[24,39,"#ffffeb"],[25,39,"#ffffeb"],[26,39,"#ffffeb"],[27,39,"#552c2c"],[28,39,"#552c2c"],[29,39,"#552c2c"],[30,39,"#552c2c"],[31,39,"#ffffeb"],[32,39,"#b3b3a5"],[33,39,"#b3b3a5"],[34,39,"#b3b3a5"],[35,39,"#b3b3a5"],[36,39,"#b3b3a5"],[21,40,"#ffffeb"],[22,40,"#ffffeb"],[23,40,"#b3b3a5"],[24,40,"#b3b3a5"],[25,40,"#552c2c"],[26,40,"#552c2c"],[27,40,"#552c2c"],[28,40,"#552c2c"],[29,40,"#552c2c"],[30,40,"#552c2c"],[31,40,"#ffffeb"],[32,40,"#ffffeb"],[33,40,"#b3b3a5"],[34,40,"#b3b3a5"],[35,40,"#b3b3a5"],[36,40,"#b3b3a5"],[21,41,"#b3b3a5"],[22,41,"#b3b3a5"],[23,41,"#ffffeb"],[24,41,"#552c2c"],[25,41,"#552c2c"],[26,41,"#552c2c"],[27,41,"#552c2c"],[28,41,"#552c2c"],[29,41,"#552c2c"],[30,41,"#ffffeb"],[31,41,"#ffffeb"],[32,41,"#ffffeb"],[33,41,"#ffffeb"],[34,41,"#ffffeb"],[35,41,"#ffffeb"],[36,41,"#ffffeb"],[21,42,"#b3b3a5"],[22,42,"#ffffeb"],[23,42,"#ffffeb"],[25,42,"#b3b3a5"],[26,42,"#b3b3a5"],[27,42,"#b3b3a5"],[30,42,"#ffffeb"],[31,42,"#ffffeb"],[32,42,"#ffffeb"],[34,42,"#ffffeb"],[35,42,"#ffffeb"],[36,42,"#ffffeb"],[21,43,"#ffffeb"],[22,43,"#552c2c"],[23,43,"#552c2c"],[25,43,"#552c2c"],[26,43,"#b3b3a5"],[27,43,"#b3b3a5"],[30,43,"#ffffeb"],[31,43,"#ffffeb"],[32,43,"#ffffeb"],[34,43,"#ffffeb"],[35,43,"#ffffeb"],[36,43,"#552c2c"],[21,44,"#ffffeb"],[22,44,"#552c2c"],[23,44,"#ffffeb"],[25,44,"#552c2c"],[26,44,"#552c2c"],[27,44,"#ffffeb"],[30,44,"#ffffeb"],[31,44,"#ffffeb"],[32,44,"#ffffeb"],[34,44,"#ffffeb"],[35,44,"#552c2c"],[36,44,"#552c2c"],[21,45,"#191923"],[22,45,"#191923"],[23,45,"#191923"],[25,45,"#191923"],[26,45,"#191923"],[27,45,"#191923"],[30,45,"#191923"],[31,45,"#191923"],[32,45,"#191923"],[34,45,"#191923"],[35,45,"#191923"],[36,45,"#191923"]];
+const HEAD=p=>(p[0]>=26&&p[1]<=33)||(p[0]>=30&&p[1]<=38);
+const TAIL=p=>p[0]<=20&&p[1]<=36;
+const head=P.filter(HEAD),tail=P.filter(p=>!HEAD(p)&&TAIL(p)),body=P.filter(p=>!HEAD(p)&&!TAIL(p));
+const OX=-8,OY=-12,GY=35;
+const tufts=[];for(let x=1;x<W;x+=3)tufts.push([x,2+(x*7%2)]);
+function px(x,y,c){g.fillStyle=c;g.fillRect(x,y,1,1)}
+function state(t){
+  const T=t%40;
+  if(T<10)return{dy:0,eat:0,sw:[0,1,0,-1][(T>>1)%4]*(T%2?0:1)};
+  if(T<14){const k=T-9;return{dy:k*2,eat:0,sw:0}}
+  if(T<34){const k=T-14;return{dy:k%2?7:8,eat:k,sw:[1,0,-1,0][k%4]}}
+  if(T<38){const k=37-T;return{dy:k*2,eat:0,sw:0}}
+  return{dy:0,eat:0,sw:[0,1][T%2]};
+}
+function drawCow(tick,mid){
+  const s=state(tick);
+  g.fillStyle='#6b4a2f';g.fillRect(0,GY,W,H-GY);
+  g.fillStyle='#4f9a3a';g.fillRect(0,GY,W,1);
+  body.forEach(p=>px(p[0]+OX,p[1]+OY,p[2]));
+  tail.forEach(p=>{const h=38-p[1];px(p[0]+OX+Math.trunc(h*s.sw/4),p[1]+OY,p[2])});
+  if(mid)mid(s.dy);
+  head.forEach(p=>px(p[0]+OX,p[1]+OY+s.dy,p[2]));
+  const e=Math.min(2,s.eat/7|0);
+  tufts.forEach(([x,b])=>{let h=b+1;if(x>=25&&x<=32)h=Math.max(0,h-e);
+    for(let i=0;i<h;i++)px(x,GY-1-i,i%2?'#6cc24a':'#3f8a2e');
+    if(h>1)px(x+1,GY-1,'#3f8a2e');});
+  return s.dy;
+}
+
+return drawCow;})();
+function rope(dy){
+  const x0=24,y0=26,x2=51,y2=28,cx=(x0+x2)/2,cy=(y0+y2)/2+2*(3+dy/4),seen={};
+  for(let i=0;i<=60;i++){const t=i/60,u=1-t,
+    x=Math.round(u*u*x0+2*u*t*cx+t*t*x2),y=Math.round(u*u*y0+2*u*t*cy+t*t*y2),k=x+','+y;
+    if(seen[k])continue;seen[k]=1;g.fillStyle=(x+y)%2?'#c9a66b':'#8a6a3a';g.fillRect(x,y,1,1)}
+  g.fillStyle='#8a6a3a';g.fillRect(x0-2,y0-1,3,2);g.fillStyle='#c9a66b';g.fillRect(x0-1,y0-1,1,1);g.fillRect(x0-2,y0,1,1)}
+let tick=0,last=0;
+const TXT=["No tengo claveles reales para adornar tus días, ni una vaca que pueda llevarte de regalo,","solo puedo darte unos claveles de píxeles y una pequeña vaca hecha de cuadritos.","Pero, más allá de lo que mis manos pueden ofrecerte, te entrego algo que no cabe en una pantalla:","mi corazón, mi alma y todo el cariño que te tengo.","Espero que, entre estos pequeños detalles, hayas podido sentir un poquito de todo lo que guardo por ti."];
+let vt=0,prev=0,hold=false,holdDone=false,page=0;
+const bub=document.getElementById('bub'),bt=document.getElementById('bt');
+function showPage(){bt.textContent=TXT[page];bub.style.display='block'}
+document.body.addEventListener('click',e=>{
+  if(hold){page++;if(page>=TXT.length){hold=false;holdDone=true;bub.style.display='none'}else showPage()}
+});
+function loop(ms){
+  if(ms-last>=140){tick++;last=ms}
+  const dt=Math.min(ms-prev,100);prev=ms;
+  if(!hold){vt+=dt;const c=vt%10000;
+    if(c<6000)holdDone=false;
+    else if(c<8000&&!holdDone){hold=true;page=0;vt=Math.floor(vt/10000)*10000+6000;showPage()}}
+  g.clearRect(0,0,W,H);
+  g.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--bg');
+  const dy=cowTick(tick,rope);
+  boy.frame(ms,vt);
+  g.drawImage(boy.cv,BOYX,1);
+  g.fillStyle='#8a6a3a';g.fillRect(51,27,1,2);g.fillStyle='#c9a66b';g.fillRect(51,28,1,1);
+  requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>
